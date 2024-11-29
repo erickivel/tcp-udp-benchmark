@@ -5,73 +5,128 @@ import time
 import io
 
 
-def receive_file(host, port, output_file, verbose):
-    logger = logging.getLogger("udp_client_file_receiver")
-    level = logging.DEBUG if verbose else logging.INFO
-    logging.basicConfig(level=level)
+class Client:
+    """
+    Inicializa o cliente UDP com as configurações fornecidas.
 
-    logger.info(f"Connecting to {host}:{port}")
+    @param host: Endereço IP do servidor.
+    @param port: Porta do servidor.
+    @param output_file: Caminho do arquivo para salvar os dados recebidos.
+    @param verbose: Se verdadeiro, ativa o log detalhado.
+    """
 
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        try:
-            # Send readiness signal to server
-            sock.sendto(b"READY", (host, port))
-            logger.info("Sent readiness signal to server.")
+    def __init__(self, host, port, output_file, verbose):
+        self.host = host
+        self.port = port
+        self.output_file = output_file
+        self.verbose = verbose
+        self.logg = logging.getLogger("CLIENTE_UDP")
 
-            # Receive the file data
-            start_time = time.time()
-            total_received = 0
-            packet_count = 0
-            with open(output_file, "wb") as file:
-                sock.settimeout(2)  # Set timeout to prevent infinite waiting
-                while True:
-                    try:
-                        data, _ = sock.recvfrom(io.DEFAULT_BUFFER_SIZE)
-                        if not data:
-                            break  # End of file
-                        file.write(data)
-                        packet_count += 1
-                        total_received += len(data)
-                        if verbose:
-                            logger.debug(
-                                f"Received packet {packet_count}, size: {len(data)} bytes"
+    def _init_logging(self):
+        """
+        Configura o sistema de logging com base no nível de verbosidade.
+        """
+        level = logging.DEBUG if self.verbose else logging.INFO
+        logging.basicConfig(level=level)
+        self.logg.info(
+            f"Cliente UDP inicializado para conectar a {self.host}:{self.port}"
+        )
+
+    """
+    Inicia a execução do cliente UDP: envia o sinal de prontidão e recebe o arquivo.
+    """
+
+    def run(self):
+        self._init_logging()
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            try:
+                # Enviar sinal de prontidão ao servidor
+                sock.sendto(b"READY", (self.host, self.port))
+                self.logg.info("Sinal de prontidão enviado ao servidor.")
+
+                start_time = time.time()  # Marca o tempo de início da recepção
+                total_received = 0
+                packet_count = 0
+                with open(self.output_file, "wb") as file:
+                    sock.settimeout(2)  # Define timeout para evitar espera infinita
+                    while True:
+                        try:
+                            data, _ = sock.recvfrom(io.DEFAULT_BUFFER_SIZE)
+                            if not data:
+                                break  # Fim do arquivo
+                            file.write(data)
+                            packet_count += 1
+                            total_received += len(data)
+                            if self.verbose:
+                                self.logg.debug(
+                                    f"Pacote {packet_count} recebido, tamanho: {len(data)} bytes"
+                                )
+                        except socket.timeout:
+                            # Timeout usado para detectar fim do arquivo em UDP
+                            self.logg.info(
+                                "Sem mais dados do servidor. Transferência concluída."
                             )
-                    except socket.timeout:
-                        # Timeout used to detect end of file for UDP
-                        logger.info("No more data from server. Transfer complete.")
-                        break
+                            break
 
-            elapsed_time = time.time() - start_time
-            throughput = total_received / elapsed_time / (1024 * 1024)
+                elapsed_time = time.time() - start_time  # Tempo total da transferência
+                throughput = (
+                    total_received / elapsed_time / (1024 * 1024)
+                )  # Taxa de transferência em MB/s
 
-            logger.info(f"File received successfully in {elapsed_time:.2f} seconds.")
-            logger.info(
-                f"Total size: {total_received} bytes in {packet_count} packets."
-            )
-            logger.info(f"Throughput: {throughput:.2f} MB/s")
-            logger.info(f"File saved as '{output_file}'.")
+                self.logg.info(
+                    f"Arquivo recebido com sucesso em {elapsed_time:.2f} segundos."
+                )
+                self.logg.info(
+                    f"Tamanho total: {total_received} bytes em {packet_count} pacotes."
+                )
+                self.logg.info(f"Taxa de transferência: {throughput:.2f} MB/s")
+                self.logg.info(f"Arquivo salvo como '{self.output_file}'.")
 
-        except Exception as e:
-            logger.error(f"Error: {e}")
-        finally:
-            logger.info("Client execution finished.")
+            except Exception as e:
+                self.logg.error(f"Erro: {e}")
+            finally:
+                self.logg.info("Execução do cliente finalizada.")
+
+
+"""
+Analisa os argumentos da linha de comando.
+
+@param args: Lista de argumentos passados pela linha de comando.
+@return: Objeto contendo os valores dos argumentos.
+"""
+
+
+def parse_args(args):
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Cliente UDP - Recepção de Arquivo")
+    parser.add_argument(
+        "--host", required=True, type=str, help="Endereço IP do servidor"
+    )
+    parser.add_argument(
+        "--port", required=True, type=int, help="Número da porta do servidor"
+    )
+    parser.add_argument(
+        "--output",
+        required=True,
+        type=str,
+        help="Caminho para salvar o arquivo recebido",
+    )
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Ativar log detalhado dos pacotes"
+    )
+    return parser.parse_args(args)
+
+
+"""
+Função principal: Inicializa o cliente com base nos argumentos da linha de comando e executa.
+"""
 
 
 def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(description="UDP Client - File Receiver")
-    parser.add_argument("--host", required=True, type=str, help="Server IP address")
-    parser.add_argument("--port", required=True, type=int, help="Server port number")
-    parser.add_argument(
-        "--output", required=True, type=str, help="Path to save the received file"
-    )
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="Enable detailed packet logging"
-    )
-
-    args = parser.parse_args(sys.argv[1:])
-    receive_file(args.host, args.port, args.output, args.verbose)
+    args = parse_args(sys.argv[1:])
+    client = Client(args.host, args.port, args.output, args.verbose)
+    client.run()
 
 
 if __name__ == "__main__":
