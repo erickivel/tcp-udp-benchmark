@@ -53,7 +53,7 @@ class Server:
             with open(self.file_path, "rb") as file:
                 packet_count = 0
                 total_sent = 0
-                while chunk := file.read(io.DEFAULT_BUFFER_SIZE):
+                while chunk := file.read(8196):
                     conn.sendall(chunk)
                     packet_count += 1
                     total_sent += len(chunk)

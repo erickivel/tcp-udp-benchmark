@@ -45,7 +45,7 @@ class Server:
             total_sent = 0
 
             with open(self.file_path, "rb") as file:
-                while chunk := file.read(io.DEFAULT_BUFFER_SIZE):
+                while chunk := file.read(8196):
                     sock.sendto(chunk, client_addr)
                     packet_count += 1
                     total_sent += len(chunk)
