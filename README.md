@@ -2,6 +2,7 @@
 
 ## Alunos
 Bernardo Tomasi - GRR20223827
+
 Eric Kivel      - GRR20220069
 
 ## Introdução
