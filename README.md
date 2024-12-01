@@ -60,8 +60,8 @@ Para realizar o teste foi utilizado um script chamado `test_client.sh` (<a href=
 ### Resultados em CSV  
 Os resultados completos dos testes estão disponíveis nos arquivos CSV, que podem ser acessados nos links abaixo:  
 
-- [Resultados TCP](assets/metricas_tcp.csv.txt)  
-- [Resultados UDP](assets/metricas_udp.csv.txt)  
+- <a href="assets/metricas_tcp.csv.txt" target="_blank">Resultados TCP</a>
+- <a href="assets/metricas_udp.csv.txt" target="_blank">Resultados UDP</a>
 
 Esses arquivos contêm informações detalhadas sobre o desempenho de cada protocolo, incluindo o tempo de transferência, taxa de transferência, e número de pacotes para diferentes tamanhos de arquivos e buffers.  
 
