@@ -53,7 +53,7 @@ Para realizar o teste foi utilizado um script chamado `test_client.sh` (<a href=
 
 1. **Configuração de Rede**: Todos os testes ocorreram em uma rede local, utilizando servidores e clientes com configurações fixas de IP e porta.
 2. **Tamanhos dos Arquivos**: Arquivos de 100 MB, 200 MB, 500 MB, 1 GB e 2 GB foram usados para avaliar o impacto do tamanho do arquivo na performance.
-3. **Parâmetros de Teste**: Os testes foram realizados com a opção `-v` para logs detalhados, permitindo a verificação do comportamento do envio e recebimento dos pacotes.
+3. **Tamanho do Buffer**: Buffer de 1024B, 2048B, 4096B, 8192B, 16384B e 32768B para cada tamanho de arquivo foram usados para avaliar o impacto do tamanho do buffer na performance.
 
 ## Resultados
 
@@ -118,42 +118,63 @@ Durante a execução dos testes, os logs detalhados fornecem informações cruci
 ### Log Exemplo de Cliente TCP
 
 ```
-Iniciando conexão com o servidor TCP...
-Enviando sinal de prontidão...
-Arquivo recebido com sucesso.
-Tempo de transferência: 0.99 segundos.
-Taxa de transferência: 101.33 MB/s.
-Número de pacotes enviados: 28,368.
+INFO:CLIENTE_TCP:Cliente TCP conectando a 10.254.223.42:8000
+INFO:CLIENTE_TCP:Conectado ao servidor.
+INFO:CLIENTE_TCP:Solicitação do arquivo '100mb.dat' enviada.
+INFO:CLIENTE_TCP:Métricas salvas no arquivo CSV 'metricas_tcp.csv'.
+INFO:CLIENTE_TCP:Integridade dos dados: Aprovada
+INFO:CLIENTE_TCP:Bytes perdidos: 0
+INFO:CLIENTE_TCP:Arquivo recebido em 0.98 segundos. Taxa: 102.52 MB/s
+INFO:CLIENTE_TCP:Conexão encerrada.
 ```
 
 ### Log Exemplo de Cliente UDP
 
 ```
-Iniciando conexão com o servidor UDP...
-Enviando sinal de prontidão...
-Arquivo recebido com sucesso.
-Tempo de transferência: 2.98 segundos.
-Taxa de transferência: 33.58 MB/s.
-Número de pacotes enviados: 6,400.
+INFO:CLIENTE_UDP:Cliente UDP conectando a 10.254.223.42:8000
+INFO:CLIENTE_UDP:Sinal de prontidão (READY) enviado ao servidor.
+INFO:CLIENTE_UDP:Servidor está pronto para enviar o arquivo.
+INFO:CLIENTE_UDP:Timeout atingido. Transferência concluída.
+INFO:CLIENTE_UDP:Arquivo recebido em 2.96 segundos.
+INFO:CLIENTE_UDP:Tamanho total recebido: 104857600 bytes.
+INFO:CLIENTE_UDP:Taxa de transferência: 33.81 MB/s.
+INFO:CLIENTE_UDP:Métricas salvas no arquivo CSV 'metricas_udp.csv'.
+INFO:CLIENTE_UDP:Integridade dos dados: Aprovada
+INFO:CLIENTE_UDP:Bytes perdidos: 0
+INFO:CLIENTE_UDP:Execução do cliente finalizada.
 ```
 
 ### Log Exemplo de Servidor TCP
 
 ```
-Servidor TCP iniciado na porta 12345...
-Aguardando conexão de cliente...
-Cliente conectado.
-Enviando arquivo...
-Transferência concluída.
+INFO:SERVIDOR_TCP:Servidor TCP inicializado em 10.254.223.42:8000.
+INFO:SERVIDOR_TCP:Servidor ouvindo em 10.254.223.42:8000
+INFO:SERVIDOR_TCP:Conexão aceita de ('10.254.223.43', 35436)
+INFO:SERVIDOR_TCP:Preparando para enviar 'send_data/100mb.dat' com buffer de 1024 bytes.
+INFO:SERVIDOR_TCP:Arquivo 'send_data/100mb.dat' enviado em 0.96 segundos. Taxa: 104.60 MB/s
+INFO:SERVIDOR_TCP:Conexão encerrada.
 ```
 
 ### Log Exemplo de Servidor UDP
 
 ```
-Servidor UDP iniciado na porta 12345...
-Aguardando pacotes do cliente...
-Arquivo enviado com sucesso.
-Transferência concluída.
+INFO:SERVIDOR_UDP:Servidor UDP inicializado em 10.254.223.42:8000.
+INFO:SERVIDOR_UDP:Servidor ouvindo em 10.254.223.42:8000
+INFO:SERVIDOR_UDP:Sinal de prontidão recebido de ('10.254.223.43', 38010). Iniciando transferência do arquivo.
+INFO:SERVIDOR_UDP:Preparando para enviar 'send_data/100mb.dat' com buffer de 1024 bytes.
+INFO:SERVIDOR_UDP:Arquivo 'send_data/100mb.dat' enviado em 0.95 segundos. Taxa: 104.79 MB/s
+INFO:SERVIDOR_UDP:Execução do servidor finalizada.
+```
+
+### Log Exemplo com a tag --verbose
+
+```
+DEBUG:SERVIDOR_TCP:Pacote 48151 enviado, tamanho: 1024 bytes
+DEBUG:SERVIDOR_TCP:Pacote 48152 enviado, tamanho: 1024 bytes
+DEBUG:SERVIDOR_TCP:Pacote 48153 enviado, tamanho: 1024 bytes
+DEBUG:SERVIDOR_TCP:Pacote 48154 enviado, tamanho: 1024 bytes
+DEBUG:SERVIDOR_TCP:Pacote 48155 enviado, tamanho: 1024 bytes
+DEBUG:SERVIDOR_TCP:Pacote 48156 enviado, tamanho: 1024 bytes
 ```
 
 Esses logs são úteis para monitorar o comportamento do sistema, especialmente para identificar a quantidade de pacotes enviados e o tempo necessário para a transferência. Com a opção `-v`, o cliente e o servidor geram logs detalhados de cada pacote com o seu número e tamanho para facilitar a análise do desempenho da transferência.
