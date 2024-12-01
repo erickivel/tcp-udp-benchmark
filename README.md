@@ -16,7 +16,7 @@ O sistema é composto por quatro arquivos principais:
 - **[tcp.client.py.txt - Download](assets/tcp.client.py.txt)**: Implementação do cliente TCP, que conecta ao servidor, envia um sinal de prontidão, recebe um arquivo e calcula a taxa de transferência. - <a href="assets/tcp.client.py.txt" target="_blank">Ou abra o arquivo aqui</a>
 - **[tcp.server.py.txt - Download](assets/tcp.server.py.txt)**: Implementação do servidor TCP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/tcp.server.py.txt" target="_blank">Ou abra o arquivo aqui</a>
 - **[udp.client.py.txt - Download](assets/udp.client.py.txt)**: Implementação do cliente UDP, que envia um sinal de prontidão e recebe um arquivo via UDP. - <a href="assets/udp.client.py.txt" target="_blank">Ou abra o arquivo aqui</a>
-- **[udp.server.py.txt - Download](assets/udp.server.py.txt)**: Implementação do servidor UDP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="udp.server.py.txt" target="_blank">Ou abra o arquivo aqui</a>
+- **[udp.server.py.txt - Download](assets/udp.server.py.txt)**: Implementação do servidor UDP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/udp.server.py.txt" target="_blank">Ou abra o arquivo aqui</a>
 
 Cada arquivo utiliza sockets para comunicação e oferece a opção de logs detalhados, dependendo da configuração do parâmetro `verbose`.
 
