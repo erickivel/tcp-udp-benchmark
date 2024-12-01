@@ -23,17 +23,17 @@ Cada arquivo utiliza sockets para comunicação e oferece a opção de logs deta
 ## Como Executar
 
 1. **Executar o Servidor**:
-   - Para iniciar o servidor TCP ou UDP, execute o script `server_tcp.py` ou `server_udp.py` respectivamente.
+   - Para iniciar o servidor TCP ou UDP, execute o script `tcp.server.py` ou `udp.server.py` respectivamente.
    - Exemplo de execução:
      ```bash
-     python server_tcp.py --host <ip> --port <porta> --file <caminho_do_arquivo> -v
+     python tcp.server.py --host <ip> --port <porta> -v
      ```
 
 2. **Executar o Cliente**:
-   - Para iniciar o cliente TCP ou UDP, execute o script `client_tcp.py` ou `client_udp.py` respectivamente.
+   - Para iniciar o cliente TCP ou UDP, execute o script `tcp.client.py` ou `udp.client.py` respectivamente.
    - Exemplo de execução:
      ```bash
-     python client_tcp.py --host <ip> --port <porta> --output <caminho_do_arquivo> -v
+     python tcp.client.py --host <ip> --port <porta> --file <arquivo_solicitado> --buffer <tamanho_buffer> -v
      ```
 
 ## Métricas Calculadas
@@ -48,11 +48,11 @@ O desempenho da transferência de arquivos foi analisado utilizando as seguintes
 
 ## Execução dos Testes
 
-Os testes foram realizados nas máquinas do Departamento de Informática (DINF), com a transferência de arquivos de diferentes tamanhos, variando de 1 MB a 100 MB, através dos protocolos TCP e UDP.
+Os testes foram realizados nas máquinas do Departamento de Informática (DINF), com a transferência de arquivos de diferentes tamanhos, variando de 100 MB a 2 GB, através dos protocolos TCP e UDP.
 Para realizar o teste foi utilizado um script chamado `test_client.sh` (<a href="assets/test_client.sh.txt" target="_blank">Aqui</a>) para automatizar a execução de testes com diferentes tamanhos de arquivo e tamanhos de buffer. O servidor, enquanto isso, ficava ligado escutando as conexões.
 
 1. **Configuração de Rede**: Todos os testes ocorreram em uma rede local, utilizando servidores e clientes com configurações fixas de IP e porta.
-2. **Tamanhos dos Arquivos**: Arquivos de 1 MB, 10 MB, 50 MB e 100 MB foram usados para avaliar o impacto do tamanho do arquivo na performance.
+2. **Tamanhos dos Arquivos**: Arquivos de 100 MB, 200 MB, 500 MB, 1 GB e 2 GB foram usados para avaliar o impacto do tamanho do arquivo na performance.
 3. **Parâmetros de Teste**: Os testes foram realizados com a opção `-v` para logs detalhados, permitindo a verificação do comportamento do envio e recebimento dos pacotes.
 
 ## Resultados
