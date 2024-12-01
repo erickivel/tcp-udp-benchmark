@@ -13,10 +13,10 @@ Este relatório descreve os resultados de um benchmark comparando os protocolos 
 
 O sistema é composto por quatro arquivos principais:
 
-- **[tcp.client.py - Download](tcp.client.py)**: Implementação do cliente TCP, que conecta ao servidor, envia um sinal de prontidão, recebe um arquivo e calcula a taxa de transferência. - <a href="assets/tcp.client.py.txt" target="_blank">Ou abra o arquivo aqui</a>
-- **[tcp.server.py - Download](tcp.server.py)**: Implementação do servidor TCP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/tcp.server.py.txt" target="_blank">Ou abra o arquivo aqui</a>
-- **[udp.client.py - Download](udp.client.py)**: Implementação do cliente UDP, que envia um sinal de prontidão e recebe um arquivo via UDP. - <a href="assets/udp.client.py.txt" target="_blank">Ou abra o arquivo aqui</a>
-- **[udp.server.py - Download](udp.server.py)**: Implementação do servidor UDP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="udp.server.py" target="_blank">Ou abra o arquivo aqui</a>
+- **[tcp.client.py - Download](assets/tcp.client.py.txt)**: Implementação do cliente TCP, que conecta ao servidor, envia um sinal de prontidão, recebe um arquivo e calcula a taxa de transferência. - <a href="assets/tcp.client.py.txt" target="_blank">Ou abra o arquivo aqui</a>
+- **[tcp.server.py - Download](assets/tcp.server.py.txt)**: Implementação do servidor TCP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/tcp.server.py.txt" target="_blank">Ou abra o arquivo aqui</a>
+- **[udp.client.py - Download](assets/udp.client.py.txt)**: Implementação do cliente UDP, que envia um sinal de prontidão e recebe um arquivo via UDP. - <a href="assets/udp.client.py.txt" target="_blank">Ou abra o arquivo aqui</a>
+- **[udp.server.py - Download](assets/udp.server.py.txt)**: Implementação do servidor UDP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="udp.server.py" target="_blank">Ou abra o arquivo aqui</a>
 
 Cada arquivo utiliza sockets para comunicação e oferece a opção de logs detalhados, dependendo da configuração do parâmetro `verbose`.
 
@@ -49,7 +49,7 @@ O desempenho da transferência de arquivos foi analisado utilizando as seguintes
 ## Execução dos Testes
 
 Os testes foram realizados nas máquinas do Departamento de Informática (DINF), com a transferência de arquivos de diferentes tamanhos, variando de 1 MB a 100 MB, através dos protocolos TCP e UDP.
-Para realizar o teste foi utilizado um script chamado `test_client.sh` (<a href="test_client.sh" target="_blank">Aqui</a>) para automatizar a execução de testes com diferentes tamanhos de arquivo e tamanhos de buffer. O servidor, enquanto isso, ficava ligado escutando as conexões.
+Para realizar o teste foi utilizado um script chamado `test_client.sh` (<a href="assets/test_client.sh.txt" target="_blank">Aqui</a>) para automatizar a execução de testes com diferentes tamanhos de arquivo e tamanhos de buffer. O servidor, enquanto isso, ficava ligado escutando as conexões.
 
 1. **Configuração de Rede**: Todos os testes ocorreram em uma rede local, utilizando servidores e clientes com configurações fixas de IP e porta.
 2. **Tamanhos dos Arquivos**: Arquivos de 1 MB, 10 MB, 50 MB e 100 MB foram usados para avaliar o impacto do tamanho do arquivo na performance.
@@ -60,8 +60,8 @@ Para realizar o teste foi utilizado um script chamado `test_client.sh` (<a href=
 ### Resultados em CSV  
 Os resultados completos dos testes estão disponíveis nos arquivos CSV, que podem ser acessados nos links abaixo:  
 
-- [Resultados TCP](assets/metricas_tcp.csv)  
-- [Resultados UDP](assets/metricas_udp.csv)  
+- [Resultados TCP](assets/metricas_tcp.csv.txt)  
+- [Resultados UDP](assets/metricas_udp.csv.txt)  
 
 Esses arquivos contêm informações detalhadas sobre o desempenho de cada protocolo, incluindo o tempo de transferência, taxa de transferência, e número de pacotes para diferentes tamanhos de arquivos e buffers.  
 
