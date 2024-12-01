@@ -7,10 +7,9 @@ import os
 
 
 class Client:
-    def __init__(self, host, port, output_file, buffer_size, file_name, verbose):
+    def __init__(self, host, port, buffer_size, file_name, verbose):
         self.host = host
         self.port = port
-        self.output_file = output_file
         self.buffer_size = buffer_size
         self.file_name = file_name
         self.verbose = verbose
@@ -92,27 +91,25 @@ class Client:
                 packet_count = 0
                 start_time = time.time()
 
-                with open(self.output_file, "wb") as file:
-                    sock.settimeout(
-                        2
-                    )  # Definindo um tempo limite para a recepção de pacotes
-                    while True:
-                        try:
-                            # Receber dados do servidor
-                            data, _ = sock.recvfrom(self.buffer_size)
-                            if not data:
-                                break
-                            file.write(data)
-                            total_received += len(data)
-                            packet_count += 1
-
-                            if self.verbose:
-                                self.logg.debug(
-                                    f"Pacote {packet_count}: {len(data)} bytes recebidos."
-                                )
-                        except socket.timeout:
-                            self.logg.info("Timeout atingido. Transferência concluída.")
+                sock.settimeout(
+                    2
+                )  # Definindo um tempo limite para a recepção de pacotes
+                while True:
+                    try:
+                        # Receber dados do servidor
+                        data, _ = sock.recvfrom(self.buffer_size)
+                        if not data:
                             break
+                        total_received += len(data)
+                        packet_count += 1
+
+                        if self.verbose:
+                            self.logg.debug(
+                                f"Pacote {packet_count}: {len(data)} bytes recebidos."
+                            )
+                    except socket.timeout:
+                        self.logg.info("Timeout atingido. Transferência concluída.")
+                        break
 
                 elapsed_time = time.time() - start_time
                 throughput = total_received / elapsed_time / (1024 * 1024)  # MB/s
@@ -122,16 +119,13 @@ class Client:
                 self.logg.info(f"Tamanho total recebido: {total_received} bytes.")
                 self.logg.info(f"Taxa de transferência: {throughput:.2f} MB/s.")
 
-                # Obter o tamanho real do arquivo
-                actual_file_size = os.path.getsize(self.output_file)
-
                 # Registrar as métricas no arquivo CSV
                 self._log_metrics_to_csv(
                     total_received,
                     elapsed_time,
                     packet_count,
                     throughput,
-                    actual_file_size,
+                    total_received,
                 )
 
             except Exception as e:
@@ -151,12 +145,6 @@ def parse_args(args):
         "--port", required=True, type=int, help="Número da porta do servidor"
     )
     parser.add_argument(
-        "--output",
-        required=True,
-        type=str,
-        help="Caminho para salvar o arquivo recebido",
-    )
-    parser.add_argument(
         "--file", required=True, type=str, help="Nome do arquivo a ser solicitado"
     )
     parser.add_argument("--buffer", required=True, type=int, help="Tamanho do buffer")
@@ -168,9 +156,7 @@ def parse_args(args):
 
 def main():
     args = parse_args(sys.argv[1:])
-    client = Client(
-        args.host, args.port, args.output, args.buffer, args.file, args.verbose
-    )
+    client = Client(args.host, args.port, args.buffer, args.file, args.verbose)
     client.run()
 
 
