@@ -13,10 +13,10 @@ Este relatório descreve os resultados de um benchmark comparando os protocolos 
 
 O sistema é composto por quatro arquivos principais:
 
-- **[tcp.client.py](tcp.client.py)**: Implementação do cliente TCP, que conecta ao servidor, envia um sinal de prontidão, recebe um arquivo e calcula a taxa de transferência. - <a href="assets/tcp.client.py.txt">Ou baixe o arquivo aqui</a>
-- **[tcp.server.py](tcp.server.py)**: Implementação do servidor TCP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/tcp.server.py.txt">Ou baixe o arquivo aqui</a>
-- **[udp.client.py](udp.client.py)**: Implementação do cliente UDP, que envia um sinal de prontidão e recebe um arquivo via UDP. - <a href="assets/udp.client.py.txt">Ou baixe o arquivo aqui</a>
-- **[udp.server.py](udp.server.py)**: Implementação do servidor UDP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/udp.server.py.txt">Ou baixe o arquivo aqui</a>
+- **[tcp.client.py - Download](tcp.client.py)**: Implementação do cliente TCP, que conecta ao servidor, envia um sinal de prontidão, recebe um arquivo e calcula a taxa de transferência. - <a href="assets/tcp.client.py.txt">Ou abra o arquivo aqui</a>
+- **[tcp.server.py - Download](tcp.server.py)**: Implementação do servidor TCP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/tcp.server.py.txt">Ou abra o arquivo aqui</a>
+- **[udp.client.py - Download](udp.client.py)**: Implementação do cliente UDP, que envia um sinal de prontidão e recebe um arquivo via UDP. - <a href="assets/udp.client.py.txt">Ou abra o arquivo aqui</a>
+- **[udp.server.py - Download](udp.server.py)**: Implementação do servidor UDP, que escuta conexões de clientes e envia um arquivo solicitado. - <a href="assets/udp.server.py">Ou abra o arquivo aqui</a>
 
 Cada arquivo utiliza sockets para comunicação e oferece a opção de logs detalhados, dependendo da configuração do parâmetro `verbose`.
 
@@ -49,7 +49,7 @@ O desempenho da transferência de arquivos foi analisado utilizando as seguintes
 ## Execução dos Testes
 
 Os testes foram realizados nas máquinas do Departamento de Informática (DINF), com a transferência de arquivos de diferentes tamanhos, variando de 1 MB a 100 MB, através dos protocolos TCP e UDP.
-Para realizar o teste foi utilizado um script chamado `test_client.sh` ([Aqui](test_client.sh)) para automatizar a execução de testes com diferentes tamanhos de arquivo e tamanhos de buffer. O servidor, enquanto isso, ficava ligado escutando as conexões.
+Para realizar o teste foi utilizado um script chamado `test_client.sh` (<a href="test_client.sh">Aqui</a>) para automatizar a execução de testes com diferentes tamanhos de arquivo e tamanhos de buffer. O servidor, enquanto isso, ficava ligado escutando as conexões.
 
 1. **Configuração de Rede**: Todos os testes ocorreram em uma rede local, utilizando servidores e clientes com configurações fixas de IP e porta.
 2. **Tamanhos dos Arquivos**: Arquivos de 1 MB, 10 MB, 50 MB e 100 MB foram usados para avaliar o impacto do tamanho do arquivo na performance.
@@ -81,27 +81,32 @@ Esses arquivos contêm informações detalhadas sobre o desempenho de cada proto
 | 2 GB                             | UDP       | 21.75                        | 901,052                    | 93.69                               |
 
 
-- Comparação de Número de Pacotes
+- **Comparação de Número de Pacotes:**
+
 O TCP enviou um número maior de pacotes do que o UDP para todos os tamanhos de buffer testados. Essa diferença é mais notável nos buffers menores, como 1024 bytes, mas diminui à medida que o tamanho do buffer aumenta.
 
 ![comparacao_pacotes](assets/comparacao_pacotes.png)
 
-- Comparação de Throughput: TCP vs UDP
+- **Comparação de Throughput: TCP vs UDP:**
+
 O throughput do TCP é consistentemente mais alto do que o do UDP, independentemente do tamanho do buffer. O TCP atinge cerca de 100 MB/s, enquanto o UDP fica próximo a 50 MB/s.
 
 ![comparacao_throughput](assets/comparacao_throughput.png)
 
-- Tempo Decorrido vs Tamanho do Buffer
+- **Tempo Decorrido vs Tamanho do Buffer:**
+
 O tempo de transmissão aumenta com o tamanho do buffer para ambos os protocolos. O UDP apresenta tempos de transmissão ligeiramente maiores em comparação ao TCP, especialmente em buffers maiores.
 
 ![tempo_vs_buffer](assets/tempo_vs_buffer.png)
 
-- Throughput vs Tamanho do Arquivo
+- **Throughput vs Tamanho do Arquivo:**
+
 O throughput do TCP é consistentemente mais alto do que o do UDP, porém conforme a tamanho dos arquivos aumentam o UDP se aproxima do TCP.
 
 ![throughput_vs_tamanho_arquivo](assets/throughput_vs_tamanho_arquivo.png)
 
-- Throughput vs Tamanho do Buffer
+- **Throughput vs Tamanho do Buffer:**
+
 O throughput do TCP é maior que o UDP independentemente do buffer.
 
 ![throughput_vs_tamanho_buffer](assets/throughput_vs_tamanho_buffer.png)
